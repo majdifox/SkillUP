@@ -1,5 +1,9 @@
 <?php
-class users {
+require_once "userInterface.php";
+require_once "interfaceCRUD.php";
+
+
+abstract class users implements userInterface, interfaceCRUD  {
     private $conn;
     private $table_name = "users";
 
