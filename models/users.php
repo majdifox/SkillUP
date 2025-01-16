@@ -4,23 +4,23 @@ require_once "interfaceCRUD.php";
 
 
 abstract class users implements userInterface, interfaceCRUD  {
-    private $conn;
-    private $table_name = "users";
-
-    protected $user_id;
+    
+    protected $db;
+    protected $id;
     protected $user_serial;
-    protected $first_name;
-    protected $last_name;
-    protected $age;
-    protected $password;
-    protected $role;
     protected $email;
-    protected $status;
-    protected $error_message;
+    protected $role;
 
-    public function __construct($db) {
-        $this->conn = $db;
-        $this->error_message = '';
+
+
+    public function __construct($db, $userData = null) {
+        $this->db = $db;
+        if (userData){
+            $this->id = userData['id'];
+            $this->user_serial = userData['user_serial'];
+            $this->email = userData['email'];
+
+        }
     }
 
     public function register() {
