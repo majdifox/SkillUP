@@ -75,7 +75,24 @@ abstract class users implements userInterface, interfaceCRUD  {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
+    // now I'm implementing the userInterface 
+
+    public function getRole(){
+        return $this->role;
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getUsername(){
+        return $this->username;
+    }
+
+    public function getEmail(){
+        return $this->email;
+    }
 }
 
 ?>
