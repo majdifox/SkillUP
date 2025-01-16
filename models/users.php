@@ -32,10 +32,10 @@ abstract class users implements userInterface, interfaceCRUD  {
         $query = "INSERT INTO users (username, email, password, role ) VALUES (:username , :email, :password, :role)";
 
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam('username', data['username']);
-        $stmt->bindParam('email', data['email']);
-        $stmt->bindParam('password', password_hash(data['password'], PASSWORD_BCRYPT)); 
-        $stmt->bindParam('role',data['role']);
+        $stmt->bindParam(':username', data['username']);
+        $stmt->bindParam(':email', data['email']);
+        $stmt->bindParam(':password', password_hash($data['password'], PASSWORD_BCRYPT)); 
+        $stmt->bindParam(':role',data['role']);
 
         return $stmt->execute();
     }
@@ -52,6 +52,17 @@ abstract class users implements userInterface, interfaceCRUD  {
     }
 
 
+    public function update($id, $data){
+        $query = "UPDATE users SET username = :username , email = :email, password = :password where user_id = :id";
+
+        $stmt = $this->prepare($query);
+        $stmt->bindParam(":username",$data['username']);
+        $stmt->bindParam(":email", $data['email']);
+        $stmt->bindParam(":password",password_hash($data['password'],PASSWORD_BCRYPT));
+        $stmt->bindParam(":id", $id);
+
+        return $stmt->execute();
+    }
 
 }
 
