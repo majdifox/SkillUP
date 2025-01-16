@@ -40,6 +40,7 @@ abstract class users implements userInterface, interfaceCRUD  {
         return $stmt->execute();
     }
     
+    // display
     public function read($id){
 
         $query = "SELECT * FROM users WHERE user_id = :id";
@@ -51,7 +52,7 @@ abstract class users implements userInterface, interfaceCRUD  {
 
     }
 
-
+    // update 
     public function update($id, $data){
         $query = "UPDATE users SET username = :username , email = :email, password = :password where user_id = :id";
 
@@ -64,6 +65,17 @@ abstract class users implements userInterface, interfaceCRUD  {
         return $stmt->execute();
     }
 
+// here to display all users from users table
+    public function getAll(){
+
+        $query = "SELECT * FROM users WHERE role <> 'admin'";
+
+        $stmt = $this->prepare($query);
+        $stmt->bindParam(":admin",$this->role);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
 
 ?>
