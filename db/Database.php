@@ -1,21 +1,31 @@
 <?php
+
 class Database {
-    private $host = "localhost";
-    private $db_name = "skillup";
-    private $username = "root";
-    private $password = "";
-    public $conn;
+    private static $instance = null;
+    private $conn;
+
+    private function __construct() {
+        $host = "localhost";
+        $dbname = "skillup";
+        $user = "root";
+        $pass = "";
+
+        try {
+            $this->conn = new PDO("pgsql:host=$host;dbname=$dbname", $user, $pass);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            echo "Connection failed: " . $e->getMessage();
+        }
+    }
+
+    public static function getInstance() {
+        if (self::$instance == null) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
+    }
 
     public function getConnection() {
-        $this->conn = null;
-        try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            $this->conn->exec("set names utf8");
-        } catch(PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
-        }
         return $this->conn;
     }
 }
-?>
-
