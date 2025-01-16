@@ -40,6 +40,16 @@ abstract class users implements userInterface, interfaceCRUD  {
         return $stmt->execute();
     }
     
+    public function read($id){
+
+        $query = "SELECT * FROM users WHERE user_id = :id";
+
+        $stmt = $this-db->prepare($query);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    }
 
 
 
