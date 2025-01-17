@@ -51,7 +51,7 @@ CREATE TABLE `course` (
   `length` int(11) DEFAULT NULL,
   `tags` text DEFAULT NULL,
   `category` varchar(100) DEFAULT NULL,
-  `instructor_serial` varchar(50) DEFAULT NULL,
+  `instructor_username` varchar(50) DEFAULT NULL,
   `file_path` varchar(255) DEFAULT NULL,
   `delete` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -65,8 +65,9 @@ CREATE TABLE `course` (
 CREATE TABLE `enroll` (
   `enroll_id` int(11) NOT NULL,
   `course_title` varchar(50) DEFAULT NULL,
-  `instructor_serial` varchar(100) DEFAULT NULL,
-  `student_serial` varchar(100) DEFAULT NULL
+  `instructor_username` varchar(100) DEFAULT NULL,
+  `student_username` varchar(100) DEFAULT NULL,
+  `enrolled_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -115,15 +116,15 @@ ALTER TABLE `category`
 --
 ALTER TABLE `course`
   ADD PRIMARY KEY (`course_id`),
-  ADD KEY `instructor_serial` (`instructor_serial`);
+  ADD KEY `instructor_username` (`instructor_username`);
 
 --
 -- Indexes for table `enroll`
 --
 ALTER TABLE `enroll`
   ADD PRIMARY KEY (`enroll_id`),
-  ADD KEY `instructor_serial` (`instructor_serial`),
-  ADD KEY `student_serial` (`student_serial`),
+  ADD KEY `instructor_username` (`instructor_username`),
+  ADD KEY `student_username` (`student_username`),
   ADD KEY `course_title` (`course_title`);
 
 --
