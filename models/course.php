@@ -68,7 +68,7 @@ abstract class Course implements CrudInterface, DisplayableInterface {
 // this is an abstract method 
     abstract public function display();
 
-    public function enroll($student_username) {
+    public function enrollement($student_username) {
         $query = "INSERT INTO enroll (student_username, course_id) VALUES (:student_username, :course_id)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':student_username', $student_username);
