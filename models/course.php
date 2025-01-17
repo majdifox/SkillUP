@@ -84,5 +84,14 @@ public function getEnrollments() {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+public function getTitle(){
+    return $this->title;
+}
+public function getDescription(){
+    return $this->description;
+}
+public function getId(){
+    return $this->id;
+}
 }
 ?>
