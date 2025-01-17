@@ -47,7 +47,15 @@ abstract class Course implements CrudInterface, DisplayableInterface {
     }
 
     
-
+    public function getAll($page = 1, $perPage = 10) {
+        $offset = ($page - 1) * $perPage;
+        $query = "SELECT * FROM courses LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }
 ?>
