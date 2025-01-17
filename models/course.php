@@ -65,5 +65,9 @@ abstract class Course implements CrudInterface, DisplayableInterface {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+// this is an abstract method 
+    abstract public function display();
+    
+
 }
 ?>
