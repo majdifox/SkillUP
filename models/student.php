@@ -24,7 +24,13 @@ class student extends users {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    
+    public function enrollCourse($courseId) {
+        $query = "INSERT INTO enroll (student_username, course_title) VALUES (:student_username, :course_title)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':student_username', $this->id);
+        $stmt->bindParam(':course_title', $courseId);
+        return $stmt->execute();
+    }
 
 
 
@@ -33,6 +39,6 @@ class student extends users {
     }
 
 
-}
+
 
 ?>
