@@ -93,6 +93,12 @@ abstract class users implements userInterface, interfaceCRUD  {
     public function getEmail(){
         return $this->email;
     }
+
+    // abstract method to get student Instructor and courses
+
+    abstract public function getData();
+    
 }
+
 
 ?>

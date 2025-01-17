@@ -89,12 +89,12 @@ CREATE TABLE `tags` (
 
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
-  `user_serial` varchar(500) DEFAULT NULL,
+  `username` varchar(500) DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
   `age` int(11) DEFAULT NULL,
   `password` varchar(500) DEFAULT NULL,
-  `role` enum('enseignant','etudiant','admin') DEFAULT NULL,
+  `role` enum('instructor','student','admin') DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `status` enum('in progress','accepted','declined') DEFAULT 'in progress',
   `creation_date` datetime DEFAULT current_timestamp()
