@@ -91,7 +91,7 @@ public function getDescription(){
     return $this->description;
 }
 public function getId(){
-    return $this->id;
+    return $this->course_id;
 }
 }
 ?>
