@@ -75,6 +75,14 @@ abstract class Course implements CrudInterface, DisplayableInterface {
         $stmt->bindParam(':course_id', $this->id);
         return $stmt->execute();
     }
+// getters
 
+public function getEnrollments() {
+    $query = "SELECT users.* FROM users JOIN enroll ON users.user_id = enroll.student_username WHERE enroll.course_id = :course_id";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindParam(':course_id', $this->id);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 ?>
