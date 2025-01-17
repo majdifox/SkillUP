@@ -1,5 +1,5 @@
 <?php
-require_once 'CrudInterface.php';
+require_once 'interfaceCRUD.php';
 
 class Category implements CrudInterface {
     private $db;

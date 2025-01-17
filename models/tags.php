@@ -1,6 +1,6 @@
 <?php
 
-require_once 'CrudInterface.php';
+require_once 'interfaceCRUD.php';
 
 class tags implements CrudInterface {
     private $db;
