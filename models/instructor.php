@@ -26,6 +26,22 @@ class instructor extends users{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function addCourse($courseData){
+
+        $query = "INSERT INTO course (title, description, instructor_username, category) 
+        VALUES (:title, :description, :instructor_username, :category)";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':title', $courseData['title']);
+        $stmt->bindParam(':description', $courseData['description']);
+        $stmt->bindParam(':instructor_username', $this->id);
+        $stmt->bindParam(':category', $courseData['category']);
+        return $stmt->execute();
+
+
+
+    }
+
 }
 
 
