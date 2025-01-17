@@ -16,13 +16,15 @@ class instructor extends users{
 
     }
 
-    public function getData(){
+    public function getData() {
 
-        
+        $query = "SELECT * FROM course JOIN enroll where enroll.instructor_username= :instructor_id";
 
-
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':instructor_id' , $this->id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
 }
 
