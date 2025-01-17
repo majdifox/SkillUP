@@ -15,7 +15,7 @@ abstract class Course implements CrudInterface, DisplayableInterface {
     }
 
     public function create($data) {
-        $query = "INSERT INTO courses (title, description, instructor_username, category_id) VALUES (:title, :description, :instructor_username, :category_id)";
+        $query = "INSERT INTO course (title, description, instructor_username, category_id) VALUES (:title, :description, :instructor_username, :category_id)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':title', $data['title']);
         $stmt->bindParam(':description', $data['description']);
@@ -24,14 +24,14 @@ abstract class Course implements CrudInterface, DisplayableInterface {
         return $stmt->execute();
     }
     public function read($course_id) {
-        $query = "SELECT * FROM courses WHERE course_id = :course_id";
+        $query = "SELECT * FROM course WHERE course_id = :course_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':course_id', $course_id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function update($course_id, $data) {
-        $query = "UPDATE courses SET title = :title, description = :description, category_id = :category_id WHERE course_id = :course_id";
+        $query = "UPDATE course SET title = :title, description = :description, category_id = :category_id WHERE course_id = :course_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':title', $data['title']);
         $stmt->bindParam(':description', $data['description']);
@@ -40,7 +40,7 @@ abstract class Course implements CrudInterface, DisplayableInterface {
         return $stmt->execute();
     }
     public function delete($course_id) {
-        $query = "DELETE FROM courses WHERE course_id = :course_id";
+        $query = "DELETE FROM course WHERE course_id = :course_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':course_id', $course_id);
         return $stmt->execute();
@@ -49,7 +49,7 @@ abstract class Course implements CrudInterface, DisplayableInterface {
     
     public function getAll($page = 1, $perPage = 10) {
         $offset = ($page - 1) * $perPage;
-        $query = "SELECT * FROM courses LIMIT :limit OFFSET :offset";
+        $query = "SELECT * FROM course LIMIT :limit OFFSET :offset";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':limit', $perPage, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -57,5 +57,13 @@ abstract class Course implements CrudInterface, DisplayableInterface {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function search($keyword) {
+        $quer = "SELECT * FROM course WHERE title LIKE :keyword OR description LIKE :keyword";
+        $stmt = $this->db->prepare($query);
+        $keyword = "%$keyword%";
+        $stmt->bindParam(':keyword', $keyword);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
