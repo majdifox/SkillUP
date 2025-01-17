@@ -31,7 +31,7 @@ CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
   `category_name` varchar(20) DEFAULT NULL,
   `description` varchar(20) DEFAULT NULL,
-  `delete` int(11) DEFAULT 0
+  `deletedCategory` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -53,7 +53,7 @@ CREATE TABLE `course` (
   `category` varchar(100) DEFAULT NULL,
   `instructor_username` varchar(50) DEFAULT NULL,
   `file_path` varchar(255) DEFAULT NULL,
-  `delete` tinyint(1) DEFAULT 0
+  `deletedCourse` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
