@@ -47,6 +47,14 @@ class Admin extends Users {
         return $stmt->execute();
     }
 
+    public function updateInstructorStatus($instructorId, $status) {
+        $query = "UPDATE users SET status = :status WHERE user_id = :user_id AND role = 'instructor'";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':user_id', $instructorId);
+        return $stmt->execute();
+    }
+
 
 }
 
