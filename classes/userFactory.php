@@ -39,19 +39,28 @@ class UserFactory {
         return null;
     }
 
-    
-    public function getAllTeachers() {
-        $query = "SELECT * FROM users WHERE role = 'instructor'";
-        $stmt = $this->db->query($query);
-        $instructor = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $list = [];
-        $i = 0;
-        foreach ($instructor as $instructor) {
 
-         $list[$i] = $this->createUser($instructor['role'],$instructor);
-         $i++;
-        } 
-        return $list;
+    public function register($userData) {
+        try {
+            $query = "INSERT INTO users (username, email, password, role, is_active, status) 
+                     VALUES (:username, :email, :password, :role, :is_active, :status)";
+                     
+            $stmt = $this->db->prepare($query);
+            
+            // Store the original password before hashing
+            $originalPassword = $userData['password'];
+            $userData['password'] = password_hash($userData['password'], PASSWORD_BCRYPT);
+            
+            if ($stmt->execute($userData)) {
+                // Use the original password for login, not the hashed one
+                return $this->login($userData['email'], $originalPassword);
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            echo "PDO Exception: " . $e->getMessage();
+            return null;
+        }
     }
 }
 
