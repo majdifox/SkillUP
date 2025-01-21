@@ -27,16 +27,18 @@ abstract class Users implements UserInterface, CrudInterface {
 
     // create
     
-    public function create($data){
-
-        $query = "INSERT INTO users (username, email, password, role ) VALUES (:username , :email, :password, :role)";
-
+    public function create($data) {
+        $query = "INSERT INTO users (username, email, password, role, is_active, status) 
+                  VALUES (:username, :email, :password, :role, :is_active, :status)";
+        
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':username', data['username']);
-        $stmt->bindParam(':email', data['email']);
-        $stmt->bindParam(':password', password_hash($data['password'], PASSWORD_BCRYPT)); 
-        $stmt->bindParam(':role',data['role']);
-
+        $stmt->bindParam(':username', $data['username']);
+        $stmt->bindParam(':email', $data['email']);
+        $stmt->bindParam(':password', password_hash($data['password'], PASSWORD_BCRYPT));
+        $stmt->bindParam(':role', $data['role']);
+        $stmt->bindParam(':is_active', $data['is_active']);
+        $stmt->bindParam(':status', $data['status']);
+        
         return $stmt->execute();
     }
     
