@@ -58,7 +58,14 @@ class Student extends Users {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
+     // Enroll in a course
+     public function enrollCourse($courseId) {
+        $query = "INSERT INTO enrollments (student_id, course_id) VALUES (:student_id, :course_id)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':student_id', $this->id);
+        $stmt->bindParam(':course_id', $courseId);
+        return $stmt->execute();
+    }
 
 
 
