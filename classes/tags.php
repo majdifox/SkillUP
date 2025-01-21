@@ -1,60 +1,57 @@
 <?php
+require_once 'CrudInterface.php';
 
-require_once 'interfaceCRUD.php';
-
-class tags implements CrudInterface {
+class Tags implements CrudInterface {
     private $db;
-
+    
     public function __construct($db) {
         $this->db = $db;
     }
-
+    
     public function create($data) {
-        $query = "INSERT INTO tags (tag_name) VALUES (:tag_name)";
+        $query = "INSERT INTO tags (name) VALUES (:name)";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':tag_name', $data['tag_name']);
+        $stmt->bindParam(':name', $data['name']);
         return $stmt->execute();
     }
-
-    public function read($tag_id) {
-        $query = "SELECT * FROM tags WHERE tag_id = :tag_id";
+    
+    public function read($id) {
+        $query = "SELECT * FROM tags WHERE tag_id = :id";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':tag_id', $tag_id);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-    public function update($tag_id, $data) {
-        $query = "UPDATE tags SET tag_name = :tag_name WHERE tag_id = :tag_id";
+    
+    public function update($id, $data) {
+        $query = "UPDATE tags SET name = :name WHERE tag_id = :id";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':tag_name', $data['tag_name']);
-        $stmt->bindParam(':tag_id', $tag_id);
+        $stmt->bindParam(':name', $data['name']);
+        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
-
-    public function delete($tag_id) {
-        $query = "DELETE FROM tags WHERE tag_id = :tag_id";
+    
+    public function delete($id) {
+        $query = "DELETE FROM tags WHERE tag_id = :id";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':tag_id', $tag_id);
+        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
-
+    
     public function getAll() {
-        $query = "SELECT * FROM tags";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $query = "SELECT * FROM tags ORDER BY name ASC";
+        $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
 
 ?>
