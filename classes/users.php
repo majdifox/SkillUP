@@ -99,15 +99,13 @@ abstract class Users implements UserInterface, CrudInterface {
     }
 
 // here to display all users from users table
-    public function getAll(){
-
-        $query = "SELECT * FROM users WHERE role <> 'admin'";
-
-        $stmt = $this->prepare($query);
-        $stmt->bindParam(":admin",$this->role);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+public function getAll() {
+    $query = "SELECT * FROM users WHERE role = :role";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindParam(':role', $this->role);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // now I'm implementing the userInterface 
 
@@ -126,6 +124,13 @@ abstract class Users implements UserInterface, CrudInterface {
     public function getEmail(){
         return $this->email;
     }
+
+    public function getStatus() { 
+        return $this->status; }
+
+
+    public function isActive() { 
+        return $this->is_active; }
 
     // abstract method to get student Instructor and courses
 
