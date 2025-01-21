@@ -1,26 +1,26 @@
 <?php
-require_once "userInterface.php";
-require_once "interfaceCRUD.php";
+require_once 'CrudInterface.php';
+require_once 'UserInterface.php';
 
 
-abstract class users implements userInterface, interfaceCRUD  {
-    
+abstract class Users implements UserInterface, CrudInterface {
     protected $db;
     protected $id;
     protected $username;
     protected $email;
     protected $role;
+    protected $is_active;
+    protected $status;
 
-
-// this is the users constructor 
     public function __construct($db, $userData = null) {
         $this->db = $db;
-        if (userData){
-            $this->id = userData['id'];
-            $this->	username = userData['username'];
-            $this->email = userData['email'];
-
-        }
+        if ($userData && isset($userData['user_id'])) {
+            $this->id = $userData['user_id'];
+            $this->username = $userData['username'] ?? null;
+            $this->email = $userData['email'] ?? null;
+            $this->is_active = $userData['is_active'] ?? 0;
+            $this->status = $userData['status'] ?? 'pending';
+    }
     }
 
     // I'm going to implement the CRUD here using the crud interface that I've created before 
