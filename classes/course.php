@@ -107,35 +107,17 @@ abstract class Course implements CrudInterface {
     }
 
 
-    
-
-    public function search($keyword) {
-        $quer = "SELECT * FROM course WHERE title LIKE :keyword OR description LIKE :keyword";
+    public function getEnrollments() {
+        $query = "SELECT u.*, e.enrolled_at 
+                 FROM users u 
+                 JOIN enrollments e ON u.user_id = e.student_id 
+                 WHERE e.course_id = :course_id";
+        
         $stmt = $this->db->prepare($query);
-        $keyword = "%$keyword%";
-        $stmt->bindParam(':keyword', $keyword);
+        $stmt->bindParam(':course_id', $this->course_id);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-// this is an abstract method 
-    abstract public function display();
-
-    public function enrollement($student_username) {
-        $query = "INSERT INTO enroll (student_username, course_id) VALUES (:student_username, :course_id)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':student_username', $student_username);
-        $stmt->bindParam(':course_id', $this->id);
-        return $stmt->execute();
-    }
-// getters
-
-public function getEnrollments() {
-    $query = "SELECT users.* FROM users JOIN enroll ON users.user_id = enroll.student_username WHERE enroll.course_id = :course_id";
-    $stmt = $this->db->prepare($query);
-    $stmt->bindParam(':course_id', $this->id);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
 public function getTitle(){
     return $this->title;
 }
