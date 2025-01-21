@@ -79,6 +79,18 @@ class Student extends Users {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function isEnrolled($courseId) {
+        $query = "SELECT COUNT(*) FROM enrollments 
+                  WHERE student_id = :student_id AND course_id = :course_id";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':student_id', $this->id);
+        $stmt->bindParam(':course_id', $courseId);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+
+    
 
     }
 
