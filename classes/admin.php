@@ -10,13 +10,11 @@ class Admin extends Users {
     }
 
     public function getData() {
-        $sql = "SELECT 
-                (SELECT COUNT(*) FROM courses),
-                (SELECT COUNT(*) FROM users WHERE role = 'student'),
-                (SELECT COUNT(*) FROM users WHERE role = 'teacher')";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = [
+            'courses' => $this->getCourseStats(),
+            'users' => $this->getUserStats(),
+        ];
+        return $data;
     }
 
     public function validateInstructor($instructorId) {
