@@ -27,21 +27,46 @@ class Instructor extends Users {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addCourse($courseData){
-
-        $query = "INSERT INTO course (title, description, instructor_username, category) 
-        VALUES (:title, :description, :instructor_username, :category)";
-
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':title', $courseData['title']);
-        $stmt->bindParam(':description', $courseData['description']);
-        $stmt->bindParam(':instructor_username', $this->id);
-        $stmt->bindParam(':category', $courseData['category']);
-        return $stmt->execute();
-
-
-
+    public function addCourse($data) {
+        $query = "INSERT INTO courses (
+            title, description, thumbnail_url, difficulty_level, duration_type, duration_value, content_type, teacher_id, category_id, document_pages, video_length, video_url, document_url, status) 
+            VALUES (:title, :description, :thumbnail_url, :difficulty_level, :duration_type, :duration_value, :content_type, :teacher_id, :category_id, :document_pages, :video_length, :video_url, :document_url, 'in_progress')";
+    
+        try {
+            $stmt = $this->db->prepare($query);
+            
+            $stmt->bindParam(':title', $data['title']);
+            $stmt->bindParam(':description', $data['description']);
+            $stmt->bindParam(':thumbnail_url', $data['thumbnail_url']);
+            $stmt->bindParam(':difficulty_level', $data['difficulty_level']);
+            $stmt->bindParam(':duration_type', $data['duration_type']);
+            $stmt->bindParam(':duration_value', $data['duration_value']);
+            $stmt->bindParam(':content_type', $data['content_type']);
+            $stmt->bindParam(':teacher_id', $data['teacher_id']);
+            $stmt->bindParam(':category_id', $data['category_id']);
+            
+            // Handle nullable fields
+            $document_pages = isset($data['document_pages']) ? $data['document_pages'] : null;
+            $video_length = isset($data['video_length']) ? $data['video_length'] : null;
+            $video_url = isset($data['video_url']) ? $data['video_url'] : null;
+            $document_url = isset($data['document_url']) ? $data['document_url'] : null;
+            
+            $stmt->bindParam(':document_pages', $document_pages);
+            $stmt->bindParam(':video_length', $video_length);
+            $stmt->bindParam(':video_url', $video_url);
+            $stmt->bindParam(':document_url', $document_url);
+    
+            if ($stmt->execute()) {
+                return true;
+            }
+            return false;
+        } catch (PDOException $e) {
+            // Log error or handle it appropriately
+            error_log("Error while adding the course: " . $e->getMessage());
+            return false;
+        }
     }
+
 
 }
 
