@@ -27,17 +27,19 @@ class UserFactory {
     }
 
     public function login($email, $password) {
-        $query = "SELECT * FROM users WHERE email = :email";
+        $query = "SELECT * FROM users WHERE email = :email AND is_active = 1";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        
         if ($userData && password_verify($password, $userData['password'])) {
             return $this->createUser($userData['role'], $userData);
         }
         return null;
     }
+
+    
     public function getAllTeachers() {
         $query = "SELECT * FROM users WHERE role = 'instructor'";
         $stmt = $this->db->query($query);
