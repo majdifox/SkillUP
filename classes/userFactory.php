@@ -16,13 +16,13 @@ class UserFactory {
     public function createUser($role, $userData = null) {
         switch ($role) {
             case 'student':
-                return new student($this->db, $userData);
+                return new Student($this->db, $userData);
             case 'instructor':
-                return new instructor($this->db, $userData);
+                return new Instructor($this->db, $userData);
             case 'admin':
-                return new admin($this->db, $userData);
+                return new Admin($this->db, $userData);
             default:
-                throw new Exception("Invalid user role");
+                throw new Exception("Invalid user role: {$role}");
         }
     }
 
