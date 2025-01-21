@@ -89,6 +89,15 @@ abstract class Users implements UserInterface, CrudInterface {
         return $stmt->execute($query);
     }
 
+    // delete
+
+    public function delete($id) {
+        $query = "DELETE FROM users WHERE user_id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
 // here to display all users from users table
     public function getAll(){
 
