@@ -62,5 +62,20 @@ class UserFactory {
             return null;
         }
     }
+
+    public function getInstructors($status = null) {
+        $query = "SELECT * FROM users WHERE role = 'instructor'";
+        if ($status) {
+            $query .= " AND status = :status";
+        }
+        
+        $stmt = $this->db->prepare($query);
+        if ($status) {
+            $stmt->bindParam(':status', $status);
+        }
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
