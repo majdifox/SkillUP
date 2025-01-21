@@ -118,6 +118,8 @@ abstract class Course implements CrudInterface {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // getters 
 public function getTitle(){
     return $this->title;
 }
@@ -126,6 +128,11 @@ public function getDescription(){
 }
 public function getId(){
     return $this->course_id;
+
 }
+public function getStatus() {
+     return $this->status; }
+
 }
+
 ?>
