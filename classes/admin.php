@@ -54,7 +54,35 @@ class Admin extends Users {
         $stmt->bindParam(':user_id', $instructorId);
         return $stmt->execute();
     }
-
+    public function deleteCourse($courseId) {
+        try {
+            $this->db->beginTransaction();
+            
+            // First, delete related records from course_tags
+            $query = "DELETE FROM course_tags WHERE course_id = :course_id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':course_id', $courseId);
+            $stmt->execute();
+            
+            // Then delete any related records from enrollments (if you have this table)
+            $query = "DELETE FROM enrollments WHERE course_id = :course_id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':course_id', $courseId);
+            $stmt->execute();
+            
+            // Finally delete the course
+            $query = "DELETE FROM courses WHERE course_id = :course_id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':course_id', $courseId);
+            $stmt->execute();
+            
+            $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
+    }
 
 }
 
