@@ -27,6 +27,21 @@ class Admin extends Users {
         $stmt = $this->db->query($query);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getUserStats() {
+        $query = "SELECT 
+                    COUNT(*) as total_users,
+                    COUNT(CASE WHEN role = 'student' THEN 1 END) as student_count,
+                    COUNT(CASE WHEN role = 'instructor' THEN 1 END) as instructor_count
+                  FROM users
+                  WHERE role != 'admin'";
+        $stmt = $this->db->query($query);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+
+
 }
 
 ?>
