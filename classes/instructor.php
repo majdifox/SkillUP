@@ -1,27 +1,28 @@
 <?php
 
-require_once 'users.php';
-
-class instructor extends users{
-
-    public function __construct($db, $userData = null){
-
+class Instructor extends Users {
+    public function __construct($db, $userData = null) {
         parent::__construct($db, $userData);
         $this->role = 'instructor';
-        if ($userData) {
-            $this->id = $userData['id_user'];
-            $this->username = $userData['username'];
-            $this->email = $userData['email'];
-        }
-
     }
 
     public function getData() {
-
-        $query = "SELECT * FROM course JOIN enroll where enroll.instructor_username= :instructor_id";
-
+        $query = "SELECT 
+            c.*, 
+            cat.name AS category_name,
+            GROUP_CONCAT(t.name) as tags,
+            COUNT(e.enrollment_id) AS student_count,
+            CONCAT(c.duration_value, ' ', c.duration_type) as duration
+        FROM courses c 
+        LEFT JOIN categories cat ON c.category_id = cat.category_id 
+        LEFT JOIN enrollments e ON c.course_id = e.course_id 
+        LEFT JOIN course_tags ct ON c.course_id = ct.course_id
+        LEFT JOIN tags t ON ct.tag_id = t.tag_id
+        WHERE c.teacher_id = :teacher_id 
+        GROUP BY c.course_id, cat.name";
+        
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':instructor_id' , $this->id);
+        $stmt->bindParam(':teacher_id', $this->id);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
