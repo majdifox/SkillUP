@@ -90,13 +90,24 @@ abstract class Course implements CrudInterface {
     
     public function getAll($page = 1, $perPage = 10) {
         $offset = ($page - 1) * $perPage;
-        $query = "SELECT * FROM course LIMIT :limit OFFSET :offset";
+        $query = "SELECT c.*, u.username as teacher_name, cat.name as category_name,
+                 COUNT(e.enrollment_id) as enrolled_count 
+                 FROM courses c 
+                 LEFT JOIN users u ON c.teacher_id = u.user_id 
+                 LEFT JOIN categories cat ON c.category_id = cat.category_id 
+                 LEFT JOIN enrollments e ON c.course_id = e.course_id 
+                 GROUP BY c.course_id 
+                 LIMIT :limit OFFSET :offset";
+        
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':limit', $perPage, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    
 
     public function search($keyword) {
         $quer = "SELECT * FROM course WHERE title LIKE :keyword OR description LIKE :keyword";
