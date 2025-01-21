@@ -39,7 +39,13 @@ class Admin extends Users {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-
+    public function updateCourseStatus($courseId, $status) {
+        $query = "UPDATE courses SET status = :status WHERE course_id = :course_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':course_id', $courseId);
+        return $stmt->execute();
+    }
 
 
 }
