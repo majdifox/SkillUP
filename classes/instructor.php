@@ -67,6 +67,46 @@ class Instructor extends Users {
         }
     }
 
+    public function deleteCourse($courseId) {
+        try {
+            $this->db->beginTransaction();
+            
+            error_log("Starting course deletion for course ID: " . $courseId);
+            $this->db->beginTransaction();
+            
+            // Delete from course_tags
+            $query = "DELETE FROM course_tags WHERE course_id = :course_id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':course_id', $courseId);
+            $success = $stmt->execute();
+            error_log("Course tags deletion: " . ($success ? "success" : "failed"));
+            
+            // Delete from enrollments
+            $query = "DELETE FROM enrollments WHERE course_id = :course_id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':course_id', $courseId);
+            $success = $stmt->execute();
+            error_log("Enrollments deletion: " . ($success ? "success" : "failed"));
+            
+            // Delete the course
+            $query = "DELETE FROM courses WHERE course_id = :course_id AND teacher_id = :teacher_id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':course_id', $courseId);
+            $stmt->bindParam(':teacher_id', $this->id);
+            $success = $stmt->execute();
+            error_log("Course deletion: " . ($success ? "success" : "failed"));
+            
+            $this->db->commit();
+            error_log("Course deletion completed successfully");
+            return true;
+            
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            error_log("Error in deleteCourse method: " . $e->getMessage());
+            return false;
+        }
+    }
+
 
 }
 
