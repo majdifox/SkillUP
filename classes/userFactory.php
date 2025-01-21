@@ -1,13 +1,13 @@
 <?php
+
+require_once 'Users.php';
 require_once 'Admin.php';
-require_once 'instructor.php';
-require_once 'student.php';
+require_once 'Instructor.php';
+require_once 'Student.php';
 
-
-
-class userfactory {
+class UserFactory {
     private $db;
-
+    
     public function __construct($db) {
         $this->db = $db;
     }
