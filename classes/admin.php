@@ -17,11 +17,15 @@ class Admin extends Users {
         return $data;
     }
 
-    public function validateInstructor($instructorId) {
-        $sql = "UPDATE users SET is_active = TRUE WHERE id = :id AND role = 'teacher'";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $teacherId);
-        return $stmt->execute();
+
+    public function getCourseStats() {
+        $query = "SELECT 
+                    COUNT(*) as total_courses,
+                    COUNT(CASE WHEN status = 'in_progress' THEN 1 END) as pending_courses,
+                    COUNT(CASE WHEN status = 'accepted' THEN 1 END) as accepted_courses
+                  FROM courses";
+        $stmt = $this->db->query($query);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 
