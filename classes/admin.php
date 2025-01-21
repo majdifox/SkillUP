@@ -1,17 +1,12 @@
 <?php
 
-require_once "users.php";
+require_once "Users.php";
 
-class admin extends users{
+class Admin extends Users {
 
     public function __construct($db, $userData = null) {
-        parent::__construct($db);
+        parent::__construct($db, $userData);
         $this->role = 'admin';
-        if ($userData) {
-            $this->id = $userData['id'];
-            $this->username = $userData['username'];
-            $this->email = $userData['email'];
-        }
     }
 
     public function getData() {
