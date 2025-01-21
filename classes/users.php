@@ -43,28 +43,50 @@ abstract class Users implements UserInterface, CrudInterface {
     }
     
     // display
-    public function read($id){
-
+    public function read($id) {
         $query = "SELECT * FROM users WHERE user_id = :id";
-
-        $stmt = $this-db->prepare($query);
-        $stmt->bindParam(":id", $id);
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC); 
-
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // update 
-    public function update($id, $data){
-        $query = "UPDATE users SET username = :username , email = :email, password = :password where user_id = :id";
+    public function update($id, $data) {
 
-        $stmt = $this->prepare($query);
-        $stmt->bindParam(":username",$data['username']);
-        $stmt->bindParam(":email", $data['email']);
-        $stmt->bindParam(":password",password_hash($data['password'],PASSWORD_BCRYPT));
-        $stmt->bindParam(":id", $id);
-
-        return $stmt->execute();
+        $updateFields = [];
+        $query = [];
+        
+        
+        if (isset($data['username'])) {
+            $updateFields[] = "username = :username";
+            $query[':username'] = $data['username'];
+        }
+        if (isset($data['email'])) {
+            $updateFields[] = "email = :email";
+            $query[':email'] = $data['email'];
+        }
+        if (isset($data['is_active'])) {
+            $updateFields[] = "is_active = :is_active";
+            $query[':is_active'] = $data['is_active'];
+        }
+        if (isset($data['status'])) {
+            $updateFields[] = "status = :status";
+            $query[':status'] = $data['status'];
+        }
+        
+        
+        if (empty($updateFields)) {
+            return true;
+        }
+        
+        
+        $query = "UPDATE users SET " . implode(', ', $updateFields) . " WHERE user_id = :id";
+        $query[':id'] = $id;
+        
+        
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute($query);
     }
 
 // here to display all users from users table
