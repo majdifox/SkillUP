@@ -56,7 +56,7 @@ class Category implements CrudInterface {
     }
 
     public function getAll() {
-        $query = "SELECT * FROM category";
+        $query = "SELECT * FROM categories ORDER BY name ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
