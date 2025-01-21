@@ -56,14 +56,15 @@ class CourseTags implements CrudInterface {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
+    // Additional useful methods
     public function deleteAllTags($course_id) {
         $query = "DELETE FROM course_tags WHERE course_id = :course_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':course_id', $course_id);
         return $stmt->execute();
     }
-  
+
     public function getTagsByCourse($course_id) {
         $query = "SELECT t.* FROM tags t 
                  JOIN course_tags ct ON t.tag_id = ct.tag_id 
@@ -84,4 +85,3 @@ class CourseTags implements CrudInterface {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-

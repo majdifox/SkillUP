@@ -87,7 +87,6 @@ abstract class Course implements CrudInterface {
         }
     }
 
-    
     public function getAll($page = 1, $perPage = 10) {
         $offset = ($page - 1) * $perPage;
         $query = "SELECT c.*, u.username as teacher_name, cat.name as category_name,
@@ -106,7 +105,6 @@ abstract class Course implements CrudInterface {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     public function getEnrollments() {
         $query = "SELECT u.*, e.enrolled_at 
                  FROM users u 
@@ -119,20 +117,12 @@ abstract class Course implements CrudInterface {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // getters 
-public function getTitle(){
-    return $this->title;
-}
-public function getDescription(){
-    return $this->description;
-}
-public function getId(){
-    return $this->course_id;
+    
 
+    // Getters and setters
+    public function getTitle() { return $this->title; }
+    public function getDescription() { return $this->description; }
+    public function getCourseId() { return $this->course_id; }
+    public function getStatus() { return $this->status; }
+    
 }
-public function getStatus() {
-     return $this->status; }
-
-}
-
-?>

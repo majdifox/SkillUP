@@ -1,5 +1,4 @@
 <?php
-
 class Instructor extends Users {
     public function __construct($db, $userData = null) {
         parent::__construct($db, $userData);
@@ -106,12 +105,5 @@ class Instructor extends Users {
             return false;
         }
     }
-
-
 }
-
-
-
-
-
 ?>

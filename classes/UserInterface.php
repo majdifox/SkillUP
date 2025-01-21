@@ -1,7 +1,5 @@
 <?php
-
-interface userInterface{
-
+interface UserInterface {
     public function getRole();
     public function getId();
     public function getUsername();
@@ -9,6 +7,3 @@ interface userInterface{
     public function getStatus(); 
     public function isActive(); 
 }
-
-
-?>

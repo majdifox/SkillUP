@@ -1,11 +1,11 @@
 <?php
-
 class Student extends Users {
     public function __construct($db, $userData = null) {
         parent::__construct($db, $userData);
         $this->role = 'student';
     }
-// getting here enrolled courses
+
+    // Get enrolled courses
     public function getData() {
         $query = "SELECT c.*, e.enrolled_at, u.username as instructor_name, cat.name as category_name, GROUP_CONCAT(t.name) as tags FROM courses c 
                   LEFT JOIN categories cat ON c.category_id = cat.category_id 
@@ -22,6 +22,7 @@ class Student extends Users {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Get available courses (not enrolled and accepted by admin)
     public function getAvailableCourses($search = '') {
         $query = "SELECT c.*, u.username as instructor_name, 
                   cat.name as category_name,
@@ -58,8 +59,8 @@ class Student extends Users {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-     // Enroll in a course
-     public function enrollCourse($courseId) {
+    // Enroll in a course
+    public function enrollCourse($courseId) {
         $query = "INSERT INTO enrollments (student_id, course_id) VALUES (:student_id, :course_id)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':student_id', $this->id);
@@ -67,6 +68,7 @@ class Student extends Users {
         return $stmt->execute();
     }
 
+    // Get course content (only if enrolled)
     public function getCourseContent($courseId) {
         $query = "SELECT c.* FROM courses c
                   JOIN enrollments e ON c.course_id = e.course_id
@@ -79,6 +81,7 @@ class Student extends Users {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Check if enrolled in a course
     public function isEnrolled($courseId) {
         $query = "SELECT COUNT(*) FROM enrollments 
                   WHERE student_id = :student_id AND course_id = :course_id";
@@ -89,12 +92,4 @@ class Student extends Users {
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
     }
-
-    
-
-    }
-
-
-
-
-?>
+}

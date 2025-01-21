@@ -11,8 +11,7 @@ class UserFactory {
     public function __construct($db) {
         $this->db = $db;
     }
-
-
+    
     public function createUser($role, $userData = null) {
         switch ($role) {
             case 'student':
@@ -25,7 +24,7 @@ class UserFactory {
                 throw new Exception("Invalid user role: {$role}");
         }
     }
-
+    
     public function login($email, $password) {
         $query = "SELECT * FROM users WHERE email = :email AND is_active = 1";
         $stmt = $this->db->prepare($query);
@@ -38,8 +37,7 @@ class UserFactory {
         }
         return null;
     }
-
-
+    
     public function register($userData) {
         try {
             $query = "INSERT INTO users (username, email, password, role, is_active, status) 
@@ -62,7 +60,7 @@ class UserFactory {
             return null;
         }
     }
-
+    
     public function getInstructors($status = null) {
         $query = "SELECT * FROM users WHERE role = 'instructor'";
         if ($status) {
@@ -78,4 +76,3 @@ class UserFactory {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-

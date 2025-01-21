@@ -1,7 +1,7 @@
 <?php
+// Updated Users.php - Base class
 require_once 'CrudInterface.php';
 require_once 'UserInterface.php';
-
 
 abstract class Users implements UserInterface, CrudInterface {
     protected $db;
@@ -22,11 +22,6 @@ abstract class Users implements UserInterface, CrudInterface {
             $this->status = $userData['status'] ?? 'pending';
     }
     }
-
-    // I'm going to implement the CRUD here using the crud interface that I've created before 
-
-    // create
-    
     public function create($data) {
         $query = "INSERT INTO users (username, email, password, role, is_active, status) 
                   VALUES (:username, :email, :password, :role, :is_active, :status)";
@@ -41,8 +36,7 @@ abstract class Users implements UserInterface, CrudInterface {
         
         return $stmt->execute();
     }
-    
-    // display
+
     public function read($id) {
         $query = "SELECT * FROM users WHERE user_id = :id";
         $stmt = $this->db->prepare($query);
@@ -51,13 +45,12 @@ abstract class Users implements UserInterface, CrudInterface {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // update 
     public function update($id, $data) {
-
+        // Start with an empty SET clause
         $updateFields = [];
         $query = [];
         
-        
+        // Only include fields that are actually provided in the data array
         if (isset($data['username'])) {
             $updateFields[] = "username = :username";
             $query[':username'] = $data['username'];
@@ -75,21 +68,19 @@ abstract class Users implements UserInterface, CrudInterface {
             $query[':status'] = $data['status'];
         }
         
-        
+        // If no fields to update, return true (no update needed)
         if (empty($updateFields)) {
             return true;
         }
         
-        
+        // Construct the query
         $query = "UPDATE users SET " . implode(', ', $updateFields) . " WHERE user_id = :id";
         $query[':id'] = $id;
         
-        
+        // Prepare and execute the statement
         $stmt = $this->db->prepare($query);
         return $stmt->execute($query);
     }
-
-    // delete
 
     public function delete($id) {
         $query = "DELETE FROM users WHERE user_id = :id";
@@ -98,45 +89,22 @@ abstract class Users implements UserInterface, CrudInterface {
         return $stmt->execute();
     }
 
-// here to display all users from users table
-public function getAll() {
-    $query = "SELECT * FROM users WHERE role = :role";
-    $stmt = $this->db->prepare($query);
-    $stmt->bindParam(':role', $this->role);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-    // now I'm implementing the userInterface 
-
-    public function getRole(){
-        return $this->role;
+    public function getAll() {
+        $query = "SELECT * FROM users WHERE role = :role";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':role', $this->role);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getId(){
-        return $this->id;
-    }
-
-    public function getUsername(){
-        return $this->username;
-    }
-
-    public function getEmail(){
-        return $this->email;
-    }
-
-    public function getStatus() { 
-        return $this->status; }
-
-
-    public function isActive() { 
-        return $this->is_active; }
-
-    // abstract method to get student Instructor and courses
+    // Interface methods
+    public function getRole() { return $this->role; }
+    public function getId() { return $this->id; }
+    public function getUsername() { return $this->username; }
+    public function getEmail() { return $this->email; }
+    public function getStatus() { return $this->status; }
+    public function isActive() { return $this->is_active; }
 
     abstract public function getData();
-    
 }
 
-
-?>

@@ -43,8 +43,8 @@ class Tags implements CrudInterface {
         $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
+    
+    // Additional useful method
     public function getTaggedCourses($tag_id) {
         $query = "SELECT c.* FROM courses c 
                  JOIN course_tags ct ON c.course_id = ct.course_id 
@@ -54,12 +54,4 @@ class Tags implements CrudInterface {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
-
-
-
-
 }
-
-?>

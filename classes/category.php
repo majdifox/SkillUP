@@ -62,6 +62,7 @@ class Category implements CrudInterface {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Additional useful method
     public function getCourseCount($category_id) {
         $query = "SELECT COUNT(*) as course_count FROM courses WHERE category_id = :id";
         $stmt = $this->db->prepare($query);
@@ -70,4 +71,3 @@ class Category implements CrudInterface {
         return $stmt->fetch(PDO::FETCH_ASSOC)['course_count'];
     }
 }
-

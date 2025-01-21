@@ -1,14 +1,12 @@
 <?php
-
-require_once "Users.php";
+require_once 'Users.php';
 
 class Admin extends Users {
-
+   
     public function __construct($db, $userData = null) {
         parent::__construct($db, $userData);
         $this->role = 'admin';
     }
-
     public function getData() {
         $data = [
             'courses' => $this->getCourseStats(),
@@ -16,7 +14,6 @@ class Admin extends Users {
         ];
         return $data;
     }
-
 
     public function getCourseStats() {
         $query = "SELECT 
@@ -54,6 +51,7 @@ class Admin extends Users {
         $stmt->bindParam(':user_id', $instructorId);
         return $stmt->execute();
     }
+
     public function deleteCourse($courseId) {
         try {
             $this->db->beginTransaction();
@@ -83,7 +81,6 @@ class Admin extends Users {
             throw $e;
         }
     }
-
 }
 
-?>
+?>  
