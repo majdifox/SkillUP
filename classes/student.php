@@ -67,6 +67,17 @@ class Student extends Users {
         return $stmt->execute();
     }
 
+    public function getCourseContent($courseId) {
+        $query = "SELECT c.* FROM courses c
+                  JOIN enrollments e ON c.course_id = e.course_id
+                  WHERE e.student_id = :student_id AND c.course_id = :course_id";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':student_id', $this->id);
+        $stmt->bindParam(':course_id', $courseId);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
 
     }
